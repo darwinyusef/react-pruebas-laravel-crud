@@ -1,19 +1,55 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Button } from 'reactstrap';
+import { Table, Button } from 'reactstrap';
+import axios from 'axios';
+import styled from 'styled-components'
 
 export default class Example extends Component {
+    constructor(){
+        super();
+        this.state = {
+            blog: []
+        }
+    }
+
+    async componentDidMount(){
+        await axios.get('/apt').then(response => {
+            this.setState({
+                blog: response.data
+            });
+            
+        }).catch(errors => {
+            console.log(errors);
+        });
+       
+
+    }
     render() {
         return (
             <div className="container">
                 <div className="row justify-content-center">
-                    <div className="col-md-8">
-                        <div className="card">
-                            <div className="card-header">Example Component</div>
-                            <Button color="danger">Elemento!</Button>
-                            <div className="card-body">I'm an example component!</div>
-                        </div>
-                    </div>
+                    <Table striped bordered>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Width</th>
+                            <th>height</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {this.state.blog.map(blog => 
+                                <tr  scope="row" key={blog.id}>
+                                    <td> {blog.title}</td>
+                                    <td> {blog.name}</td>
+                                    <td> {blog.width}</td>
+                                    <td> {blog.height} </td>
+                                    <td><Button color="primary">primary</Button></td>
+                                </tr>   
+                            )}
+                        </tbody>
+                    </Table>
                 </div>
             </div>
         );
@@ -22,7 +58,7 @@ export default class Example extends Component {
 
 
 
-
+ /**/
 
 if (document.getElementById('example')) {
     ReactDOM.render(<Example />, document.getElementById('example'));
