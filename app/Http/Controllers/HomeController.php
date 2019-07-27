@@ -31,7 +31,7 @@ class HomeController extends Controller
     }
 
     public function select(){
-       return  $data = Widgets::all();
+       return  $info = Widgets::paginate(50);
     }
 
     /*
